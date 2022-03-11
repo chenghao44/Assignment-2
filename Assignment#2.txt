@@ -1,0 +1,131 @@
+--1.
+select count(ProductID)
+from production.Product
+--2.
+select count(production.Product.ProductSubcategoryID)
+from production.Product left join production.ProductSubcategory on production.Product.ProductSubcategoryID=production.ProductSubcategory.ProductSubcategoryID
+where production.ProductSubcategory.ProductSubcategoryID is not null
+--3.
+SELECT ProductSubcategoryID, count(ProductID) as CountedProducts 
+FROM Production.Product
+WHERE ProductSubcategoryID IS NOT NULL
+GROUP BY ProductSubcategoryID
+--4.
+SELECT count(ProductID) as NumberOfProducts
+FROM Production.Product
+WHERE ProductSubcategoryID IS NULL
+--5.
+select sum(Quantity)
+from Production.ProductInventory
+--6.
+select ProductID, Quantity as TheSum
+from Production.ProductInventory
+where LocationID=40 and Quantity<100
+--7.
+SELECT Shelf, ProductID, sum(Quantity) AS TheSum
+FROM Production.ProductInventory
+WHERE LocationID = 40
+GROUP BY ProductID, Shelf
+HAVING sum(Quantity) < 100
+--8.
+select avg(Quantity)
+from production.ProductInventory
+where LocationID=10
+--9.
+SELECT ProductID, Shelf, avg(Quantity) as TheAvg
+FROM Production.ProductInventory
+GROUP BY Shelf, ProductID
+--10.
+SELECT ProductID, Shelf, avg(Quantity) as TheAvg
+FROM Production.ProductInventory
+WHERE Shelf != 'N/A'
+GROUP BY Shelf, ProductID;
+--11.
+SELECT Color, Class, count(ProductID) as TheCount, avg(ListPrice) as AveragePrice
+FROM Production.Product
+WHERE Color is not null and CLASS is not null
+GROUP BY Color, Class
+
+--For question 12&13
+--select* from person.CountryRegion
+--select* from person.StateProvince
+--12.
+select person.CountryRegion.Name as country, person.StateProvince.Name as province
+from person.CountryRegion join person. StateProvince on person.CountryRegion.ModifiedDate = person. StateProvince.ModifiedDate
+--13.
+select person.CountryRegion.Name as country, person. StateProvince.Name as province
+from person.CountryRegion join person. StateProvince on person.CountryRegion.ModifiedDate = person. StateProvince.ModifiedDate
+where person.CountryRegion.Name!='Cannada' and person.CountryRegion.Name!='Germany'
+--14.
+select distinct p.ProductName
+from [Order Details] od join Orders o on od.OrderID=o.OrderID join Products p on p.ProductID=od.ProductID
+where o.OrderDate>'1997-03-10'
+order by p.ProductName asc
+--15.
+select top(5) p.ProductID,p.UnitsOnOrder, p.ProductName, od.OrderID, o.ShipPostalCode
+from [Order Details] od join Orders o on od.OrderID=o.OrderID join Products p on p.ProductID=od.ProductID
+order by UnitsOnOrder desc
+--16.
+select top(5) p.ProductID,p.UnitsOnOrder, p.ProductName, od.OrderID, o.ShipPostalCode,o.OrderDate
+from [Order Details] od join Orders o on od.OrderID=o.OrderID join Products p on p.ProductID=od.ProductID
+where o.OrderDate>'1997-03-10'
+order by UnitsOnOrder desc
+--17.
+select City as CityName, count(CustomerID) as NumberOfCustomer
+from Customers group by City
+--18.
+select City as CityName, count(CustomerID) as NumberOfCustomer
+from Customers
+group by City
+Having count(CustomerID)>1
+--19.
+select c.ContactName,o.OrderDate,o.OrderID
+from Customers c join orders o on c.CustomerID=o.CustomerID
+where o.OrderDate>'1998-01-01'
+order by c.ContactName asc
+--20.
+select c.ContactName,o.OrderDate,o.OrderID
+from Customers c join orders o on c.CustomerID=o.CustomerID
+order by o.OrderDate desc
+--21.
+select c.ContactName,sum(Quantity) as NumberOfProducts
+from Customers c join orders o on c.CustomerID=o.CustomerID join [Order Details] od on od.OrderID=o.OrderID
+group by c.ContactName 
+order by c.ContactName asc
+--22.
+select c.ContactName,sum(Quantity) as NumberOfProducts
+from Customers c join orders o on c.CustomerID=o.CustomerID join [Order Details] od on od.OrderID=o.OrderID
+group by c.ContactName 
+having sum(Quantity)>100
+order by c.ContactName asc
+--23.
+SELECT su.CompanyName AS SupplierCompanyName, sh.CompanyName AS ShippingCompanyName
+FROM Suppliers su CROSS JOIN Shippers sh
+order by su.CompanyName asc
+--24.
+select p.ProductName,o.OrderDate
+from [Order Details] od join Orders o on od.OrderID=o.OrderID join Products p on p.ProductID=od.ProductID
+--25.
+--26.
+SELECT ReportsTo as ManagerId, count(EmployeeID) as NumberOfEmployees
+FROM Employees
+GROUP BY ReportsTo
+HAVING count(EmployeeID) > 2 
+--27.
+SELECT City, CompanyName, ContactName, 'Customer' as Type
+FROM Customers 
+UNION ALL
+SELECT City, CompanyName, ContactName, 'Supplier' as Type
+FROM Suppliers
+
+
+
+
+
+select*
+from Products
+select*
+from orders
+
+
+
